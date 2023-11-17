@@ -29,7 +29,7 @@
     }
   },
   "bin": {
-    "create": "bin/create.js"
+    "create": "bin/create.mjs"
   },
   "files": ["dist", "bin"],
   "scripts": {
