@@ -3,7 +3,21 @@
   "version": "0.0.1",
   "author": "Kricsleo <kricsleo@163.com>",
   "description": "Quickyly startup projects",
-  "keywords": ["starter", "template"],
+  "keywords": [
+    "starter",
+    "template"
+  ],
   "packageManager": "pnpm@8.10.5",
-  "license": "MIT"
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint .",
+    "lintf": "eslint . --fix"
+  },
+  "devDependencies": {
+    "bumpp": "^9.2.0",
+    "tsx": "^4.1.3",
+    "typescript": "^5.2.2",
+    "unbuild": "^2.0.0"
+  }
 }
