@@ -10,6 +10,20 @@
   "packageManager": "pnpm@8.10.5",
   "type": "module",
   "license": "MIT",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "bin": {
+    "create": "bin/create.js"
+  },
+  "files": ["dist", "bin"],
   "scripts": {
     "lint": "eslint .",
     "lintf": "eslint . --fix"
