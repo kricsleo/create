@@ -1,0 +1,1 @@
+export type Template = 'vue2' | 'vue3' | 'ts'

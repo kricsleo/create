@@ -2,4 +2,4 @@
 
 <p align="center">Create new project quickily</p>
 
-**WIP**
+🚧 **WIP**
