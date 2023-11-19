@@ -1,1 +1,1 @@
-export type Template = 'vue2' | 'vue3' | 'ts'
+export type Template =  'ts' | 'nuxt' | 'nuxt2' | 'vue' | 'vue3'

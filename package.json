@@ -51,6 +51,7 @@
     "unbuild": "^2.0.0"
   },
   "dependencies": {
-    "degit": "^2.8.4"
+    "degit": "^2.8.4",
+    "nuxi": "^3.9.1"
   }
 }
