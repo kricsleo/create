@@ -14,6 +14,7 @@ async function handleCreate(template: Template, dist: string) {
   switch(template) {
     case 'ts': return await createTS(absDist)
     case 'nuxt': return await createNuxt(absDist)
+    case 'vue': return await createVue(absDist)
     default: throw new Error(`Unknown template: ${template}`)
   }
 }
@@ -30,6 +31,16 @@ async function createTS(dist: string) {
 
 async function createNuxt(dist: string) {
   const REPO = 'nuxt/starter#v3'
+  const emitter = degit(REPO, {
+    cache: true,
+    force: true,
+    verbose: true,
+  });
+  await emitter.clone(dist)
+}
+
+async function createVue(dist: string) {
+  const REPO = 'kricsleo/starter-vue3'
   const emitter = degit(REPO, {
     cache: true,
     force: true,
