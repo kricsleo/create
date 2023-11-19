@@ -29,8 +29,7 @@ async function createTS(dist: string) {
 }
 
 async function createNuxt(dist: string) {
-  // todo:
-  const REPO = 'nuxt/starter'
+  const REPO = 'nuxt/starter#v3'
   const emitter = degit(REPO, {
     cache: true,
     force: true,
