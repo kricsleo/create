@@ -1,13 +1,33 @@
 import path from 'node:path'
-import { exec } from 'node:child_process'
 import degit from 'degit'
+import { defineCommand, runMain } from "citty";
 import { Template } from './types';
+import { version } from '../package.json'
 
-const [, , template, dist] = process.argv
+const main = defineCommand({
+  meta: {
+    name: "create",
+    version,
+    description: "Create template app quickily",
+  },
+  args: {
+    template: {
+      type: "string",
+      description: "Template",
+      required: false,
+    },
+    dist: {
+      type: "string",
+      description: "Destination",
+      required: false,
+    },
+  },
+  run({ rawArgs }) {
+    handleCreate(rawArgs[0] as Template, rawArgs[1])
+  },
+});
 
-// todo: validate args
-
-handleCreate(template as Template, dist)
+runMain(main);
 
 async function handleCreate(template: Template, dist: string) {
   const absDist = path.resolve(process.cwd(), dist)
