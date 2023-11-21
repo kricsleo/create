@@ -1,8 +1,8 @@
 {
-  "name": "create",
+  "name": "@kricsleo/create",
   "version": "0.0.1",
   "author": "Kricsleo <kricsleo@163.com>",
-  "description": "Quickyly startup projects",
+  "description": "Create template app quickily",
   "keywords": [
     "starter",
     "template"

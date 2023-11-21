@@ -1,5 +1,5 @@
-<h2 align="center">Create</h2>
+<h2 align="center">@kriclseo/create</h2>
 
-<p align="center">Create new project quickily</p>
+<p align="center">Create template app quickily</p>
 
 🚧 **WIP**
