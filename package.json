@@ -53,6 +53,6 @@
   "dependencies": {
     "citty": "^0.1.5",
     "degit": "^2.8.4",
-    "nuxi": "^3.9.1"
+    "nypm": "^0.3.3"
   }
 }

@@ -1,3 +1,9 @@
+import { installDependencies, } from "nypm";
+
 export async function install(dist: string) {
-  // todo: install deps, maybe @antfu/ni
+  // todo: add spinner
+  await installDependencies({
+    cwd: dist,
+    silent: true
+  })
 }
