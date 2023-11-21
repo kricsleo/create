@@ -10,20 +10,9 @@ const main = defineCommand({
     version,
     description: "Create template app quickily",
   },
-  args: {
-    template: {
-      type: "string",
-      description: "Template",
-      required: false,
-    },
-    dist: {
-      type: "string",
-      description: "Destination",
-      required: false,
-    },
-  },
   run({ rawArgs }) {
-    handleCreate(rawArgs[0] as Template, rawArgs[1])
+    const [template, dist] = rawArgs
+    handleCreate(template as Template, dist)
   },
 });
 
