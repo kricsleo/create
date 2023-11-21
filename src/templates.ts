@@ -1,0 +1,43 @@
+import path from 'node:path'
+import degit from 'degit'
+import { Template } from './types'
+
+export async function createTemplate(template: Template, dist: string) {
+  const absDist = path.resolve(process.cwd(), dist)
+  switch(template) {
+    case 'ts': return await createTS(absDist)
+    case 'nuxt': return await createNuxt(absDist)
+    case 'vue': return await createVue(absDist)
+    default: throw new Error(`Unknown template: ${template}`)
+  }
+}
+
+async function createTS(dist: string) {
+  const REPO = 'kricsleo/starter-ts'
+  const emitter = degit(REPO, {
+    cache: true,
+    force: true,
+    verbose: true,
+  });
+  await emitter.clone(dist)
+}
+
+async function createNuxt(dist: string) {
+  const REPO = 'nuxt/starter#v3'
+  const emitter = degit(REPO, {
+    cache: true,
+    force: true,
+    verbose: true,
+  });
+  await emitter.clone(dist)
+}
+
+async function createVue(dist: string) {
+  const REPO = 'kricsleo/starter-vue3'
+  const emitter = degit(REPO, {
+    cache: true,
+    force: true,
+    verbose: true,
+  });
+  await emitter.clone(dist)
+}
