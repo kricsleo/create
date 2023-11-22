@@ -38,7 +38,7 @@
   "scripts": {
     "dev": "unbuild --stub",
     "build": "unbuild",
-    "release": "bumpp && npm run publish",
+    "release": "bumpp && npm publish",
     "lint": "eslint .",
     "lintf": "eslint . --fix",
     "prepublishOnly": "npm run build"
