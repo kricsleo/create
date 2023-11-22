@@ -1,25 +1,42 @@
 import path from 'node:path'
 import { defineCommand, runMain } from "citty";
 import boxen from 'boxen'
-import { Template } from './types';
+import color from 'picocolors'
 import { version } from '../package.json'
-import { createTemplate } from './templates'
+import { Template, createTemplate, templates } from './templates'
 import { install } from './install';
 import { spinner } from './spinner';
 
-const main = defineCommand({
+export const create = defineCommand({
   meta: {
     name: "create",
     version,
     description: "Create template app quickily",
   },
-  async run({ rawArgs }) {
-    const [template, dist] = rawArgs
+  args: {
+    template: {
+      type: 'positional',
+      required: true,
+      valueHint: templates.join('|'),
+    },
+    dist: {
+      type: 'positional',
+      required: true,
+      valueHint: 'Dist',
+    },
+    force: {
+      type: 'boolean',
+      description: 'Override existing file',
+      alias: 'f',
+    }
+  },
+  async run(ctx) {
+    const { template, dist, force } = ctx.args
     const absDist = path.resolve(process.cwd(), dist)
     spinner.start()
     try {
       spinner.text = 'Creating template'
-      await createTemplate(template as Template, absDist)
+      await createTemplate(template as Template, absDist, { force })
       spinner.text = 'Installing dependencies'
       await install(absDist)
     } catch(e: any) {
@@ -28,9 +45,9 @@ const main = defineCommand({
       process.exit(1)
     }
     spinner.stop()
-    console.log('\n')
-    console.log(boxen(absDist, {
+    console.log(boxen(color.blue(absDist), {
       padding: 1,
+      margin: { top: 1, right: 4, left: 4 },
       dimBorder: true,
       borderStyle: 'round',
       title: 'Initialized App Dist',
@@ -40,6 +57,6 @@ const main = defineCommand({
   },
 });
 
-runMain(main);
+runMain(create);
 
 

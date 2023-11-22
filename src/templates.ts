@@ -1,30 +1,34 @@
 import { createInterface } from 'node:readline'
 import degit from 'degit'
-import { Template } from './types'
 import { spinner } from './spinner'
+import color from 'picocolors'
 
-export async function createTemplate(template: Template, dist: string) {
+export type Template =  'ts' | 'nuxt' | 'vue'
+
+export const templates = ['ts', 'nuxt', 'vue']
+
+export async function createTemplate(template: Template, dist: string, options?: degit.Options) {
   switch(template) {
-    case 'ts': return await createTS(dist)
-    case 'nuxt': return await createNuxt(dist)
-    case 'vue': return await createVue(dist)
+    case 'ts': return await createTS(dist, options)
+    case 'nuxt': return await createNuxt(dist, options)
+    case 'vue': return await createVue(dist, options)
     default: throw new Error(`Unknown template: ${template}`)
   }
 }
 
-async function createTS(dist: string) {
+async function createTS(dist: string, options?: degit.Options) {
   const REPO = 'kricsleo/starter-ts'
-  return await degitClone(REPO, dist)
+  return await degitClone(REPO, dist, options)
 }
 
-async function createNuxt(dist: string) {
+async function createNuxt(dist: string, options?: degit.Options) {
   const REPO = 'nuxt/starter#v3'
-  return await degitClone(REPO, dist)
+  return await degitClone(REPO, dist, options)
 }
 
-async function createVue(dist: string) {
+async function createVue(dist: string, options?: degit.Options) {
   const REPO = 'kricsleo/starter-vue3'
-  return await degitClone(REPO, dist)
+  return await degitClone(REPO, dist, options)
 }
 
 async function degitClone(repo: string, dist: string, options?: degit.Options) {
@@ -34,17 +38,18 @@ async function degitClone(repo: string, dist: string, options?: degit.Options) {
       throw e
     }
     return new Promise((rs, rj) => {
-      spinner.clear()
+      spinner.stop()
       const rl = createInterface({
         input: process.stdin,
         output: process.stdout,
       })
-      rl.question('Dist is not empty, overwrite? (y/n) ', async answer => {
+      rl.question(`${color.yellow('?')} Dist is not empty, override? ${color.dim('(y/n)')} `, async answer => {
         rl.close()
+        // delete last question line
+        process.stdout.write('\x1b[1A\x1b[K');
         spinner.start()
         if(!answer || answer.trim().toLocaleLowerCase() === 'y') {
-          const c = await degitClone(repo, dist, { force: true })
-          rs(c)
+          rs(await degitClone(repo, dist, { force: true }))
         } else {
           rj(e)
         }
