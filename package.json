@@ -51,6 +51,7 @@
     "unbuild": "^2.0.0"
   },
   "dependencies": {
+    "boxen": "^7.1.1",
     "citty": "^0.1.5",
     "degit": "^2.8.4",
     "nypm": "^0.3.3",
