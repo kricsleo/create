@@ -1,5 +1,7 @@
+import { createInterface } from 'node:readline'
 import degit from 'degit'
 import { Template } from './types'
+import { spinner } from './spinner'
 
 export async function createTemplate(template: Template, dist: string) {
   switch(template) {
@@ -12,24 +14,41 @@ export async function createTemplate(template: Template, dist: string) {
 
 async function createTS(dist: string) {
   const REPO = 'kricsleo/starter-ts'
-  const emitter = degit(REPO, {
-    cache: true,
-  });
-  await emitter.clone(dist)
+  return await degitClone(REPO, dist)
 }
 
 async function createNuxt(dist: string) {
   const REPO = 'nuxt/starter#v3'
-  const emitter = degit(REPO, {
-    cache: true,
-  });
-  await emitter.clone(dist)
+  return await degitClone(REPO, dist)
 }
 
 async function createVue(dist: string) {
   const REPO = 'kricsleo/starter-vue3'
-  const emitter = degit(REPO, {
-    cache: true,
-  });
-  await emitter.clone(dist)
+  return await degitClone(REPO, dist)
+}
+
+async function degitClone(repo: string, dist: string, options?: degit.Options) {
+  const emitter = degit(repo, { cache: true, ...options, });
+  return await emitter.clone(dist).catch(e => {
+    if(e?.code !== 'DEST_NOT_EMPTY') {
+      throw e
+    }
+    return new Promise((rs, rj) => {
+      spinner.clear()
+      const rl = createInterface({
+        input: process.stdin,
+        output: process.stdout,
+      })
+      rl.question('Dist is not empty, overwrite? (y/n) ', async answer => {
+        rl.close()
+        spinner.start()
+        if(!answer || answer.trim().toLocaleLowerCase() === 'y') {
+          const c = await degitClone(repo, dist, { force: true })
+          rs(c)
+        } else {
+          rj(e)
+        }
+      })
+    })
+  })
 }
