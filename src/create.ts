@@ -1,4 +1,5 @@
 import path from 'node:path'
+import { execSync } from 'node:child_process'
 import { defineCommand, runMain } from "citty";
 import boxen from 'boxen'
 import color from 'picocolors'
@@ -6,6 +7,7 @@ import { version } from '../package.json'
 import { Template, createTemplate, templates } from './templates'
 import { install } from './install';
 import { spinner } from './spinner';
+import { createWord } from './fancyName';
 
 export const create = defineCommand({
   meta: {
@@ -21,8 +23,8 @@ export const create = defineCommand({
     },
     dist: {
       type: 'positional',
-      required: true,
       valueHint: 'Dist',
+      default: createWord()
     },
     force: {
       type: 'boolean',
