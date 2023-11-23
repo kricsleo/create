@@ -43,11 +43,11 @@ async function degitClone(repo: string, dist: string, options?: degit.Options) {
     const answer = await question(`${color.yellow('?')} Dist is not empty, override? ${color.dim('(n/y)')} `)
     // delete last question line
     process.stdout.write('\x1b[1A\x1b[K');
-    spinner.start()
     if(answer.trim().toLocaleLowerCase() !== 'y') {
-      console.info('Aborted')
-      process.exit(0)
+      console.info(color.dim('\n    Aborted'))
+      process.exit(1)
     }
+    spinner.start()
     await degitClone(repo, dist, { force: true })
   }
 }

@@ -44,7 +44,14 @@ export const create = defineCommand({
     await install(absDist)
 
     spinner.stop()
-    console.log(`cd ${dist}`)
+    console.log(boxen(color.dim('>  ' + absDist) + '\n' + color.dim('>  ') + color.blue(`cd ${dist}`), {
+      padding: 0.5,
+      margin: { top: 1, right: 2, left: 2 },
+      dimBorder: true,
+      borderStyle: 'round',
+      title: 'CREATED',
+      titleAlignment: 'center'
+    }))
   },
 });
 
