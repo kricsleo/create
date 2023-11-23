@@ -53,6 +53,7 @@
   "dependencies": {
     "boxen": "^7.1.1",
     "citty": "^0.1.5",
+    "consola": "^3.2.3",
     "degit": "^2.8.4",
     "nypm": "^0.3.3",
     "ora": "^7.0.1",

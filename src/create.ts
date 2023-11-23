@@ -1,5 +1,5 @@
 import path from 'node:path'
-import { execSync } from 'node:child_process'
+import { consola } from 'consola'
 import { defineCommand, runMain } from "citty";
 import boxen from 'boxen'
 import color from 'picocolors'
@@ -35,11 +35,10 @@ export const create = defineCommand({
   async run(ctx) {
     const { template, dist, force } = ctx.args
     const absDist = path.resolve(process.cwd(), dist)
-    spinner.start()
     try {
-      spinner.text = 'Creating template'
+      consola.start('Creating template')
       await createTemplate(template as Template, absDist, { force })
-      spinner.text = 'Installing dependencies'
+      consola.start('Installing dependencies')
       await install(absDist)
     } catch(e: any) {
       spinner.stop()
@@ -47,14 +46,7 @@ export const create = defineCommand({
       process.exit(1)
     }
     spinner.stop()
-    console.log(boxen(color.blue(absDist), {
-      padding: 1,
-      margin: { top: 1, right: 4, left: 4 },
-      dimBorder: true,
-      borderStyle: 'round',
-      title: 'Initialized App Dist',
-      titleAlignment: 'center'
-    }))
+    consola.log(`\`cd ${dist}\``)
     process.exit(0)
   },
 });

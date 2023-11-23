@@ -2,6 +2,7 @@ import { createInterface } from 'node:readline'
 import degit from 'degit'
 import { spinner } from './spinner'
 import color from 'picocolors'
+import { consola } from 'consola'
 
 export type Template =  'ts' | 'nuxt' | 'vue'
 
@@ -33,27 +34,35 @@ async function createVue(dist: string, options?: degit.Options) {
 
 async function degitClone(repo: string, dist: string, options?: degit.Options) {
   const emitter = degit(repo, { cache: true, ...options, });
-  return await emitter.clone(dist).catch(e => {
+  return await emitter.clone(dist).catch(async e => {
     if(e?.code !== 'DEST_NOT_EMPTY') {
-      throw e
+      process.exit(1)
     }
-    return new Promise((rs, rj) => {
-      spinner.stop()
-      const rl = createInterface({
-        input: process.stdin,
-        output: process.stdout,
-      })
-      rl.question(`${color.yellow('?')} Dist is not empty, override? ${color.dim('(y/n)')} `, async answer => {
-        rl.close()
-        // delete last question line
-        process.stdout.write('\x1b[1A\x1b[K');
-        spinner.start()
-        if(!answer || answer.trim().toLocaleLowerCase() === 'y') {
-          rs(await degitClone(repo, dist, { force: true }))
-        } else {
-          rj(e)
-        }
-      })
+    const confirmed = await consola.prompt('Dist is not empty, override?', {
+      type: 'confirm',
+      initial: false
     })
+    if(!confirmed) {
+      process.exit(1)
+    }
+    await degitClone(repo, dist, { force: true })
+    // return new Promise((rs, rj) => {
+    //   spinner.stop()
+    //   const rl = createInterface({
+    //     input: process.stdin,
+    //     output: process.stdout,
+    //   })
+    //   rl.question(`${color.yellow('?')} Dist is not empty, override? ${color.dim('(y/n)')} `, async answer => {
+    //     rl.close()
+    //     // delete last question line
+    //     process.stdout.write('\x1b[1A\x1b[K');
+    //     spinner.start()
+    //     if(!answer || answer.trim().toLocaleLowerCase() === 'y') {
+    //       rs(await degitClone(repo, dist, { force: true }))
+    //     } else {
+    //       rj(e)
+    //     }
+    //   })
+    // })
   })
 }
