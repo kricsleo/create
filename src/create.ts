@@ -37,20 +37,20 @@ export const create = defineCommand({
     const absDist = path.resolve(process.cwd(), dist)
     spinner.start()
 
-    spinner.text = ' Creating template '
+    spinner.text = ' Creating template... '
     await createTemplate(template as Template, absDist, { force })
 
-    spinner.text = ' Installing dependencies '
+    spinner.text = ' Installing dependencies... '
     await install(absDist)
 
     spinner.stop()
-    console.log(boxen(color.dim('>  ' + absDist) + '\n' + color.dim('>  ') + color.blue(`cd ${dist}`), {
+    console.log(boxen(color.dim('>  ' + absDist) + '\n' + color.dim('>  ') + color.bold(color.blue(`cd ${dist}`)), {
+      title: color.green('CREATED'),
+      titleAlignment: 'center',
+      borderColor: 'green',
+      borderStyle: 'round',
       padding: 0.5,
       margin: { top: 1, right: 2, left: 2 },
-      dimBorder: true,
-      borderStyle: 'round',
-      title: 'CREATED',
-      titleAlignment: 'center'
     }))
   },
 });
