@@ -1,5 +1,4 @@
 import path from 'node:path'
-import { consola } from 'consola'
 import { defineCommand, runMain } from "citty";
 import boxen from 'boxen'
 import color from 'picocolors'
