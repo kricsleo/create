@@ -43,7 +43,7 @@ export const create = defineCommand({
     await install(absDist)
 
     spinner.stop()
-    console.log(boxen(color.dim('>  ' + absDist) + '\n' + color.dim('>  ') + color.bold(color.blue(`cd ${dist}`)), {
+    console.log(boxen(color.dim('>  ' + absDist) + '\n' + color.dim('>  ') + color.cyan(color.bold(`cd ${dist}`)), {
       title: color.green('CREATED'),
       titleAlignment: 'center',
       borderColor: 'green',
