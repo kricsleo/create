@@ -2,7 +2,6 @@ import { createInterface } from 'node:readline'
 import degit from 'degit'
 import { spinner } from './spinner'
 import color from 'picocolors'
-import { consola } from 'consola'
 
 export type Template =  'ts' | 'nuxt' | 'vue'
 
@@ -34,35 +33,34 @@ async function createVue(dist: string, options?: degit.Options) {
 
 async function degitClone(repo: string, dist: string, options?: degit.Options) {
   const emitter = degit(repo, { cache: true, ...options, });
-  return await emitter.clone(dist).catch(async e => {
+  try {
+    await emitter.clone(dist)
+  } catch(e: any) {
     if(e?.code !== 'DEST_NOT_EMPTY') {
-      process.exit(1)
+      throw e
     }
-    const confirmed = await consola.prompt('Dist is not empty, override?', {
-      type: 'confirm',
-      initial: false
-    })
-    if(!confirmed) {
-      process.exit(1)
+    spinner.stop()
+    const answer = await question(`${color.yellow('?')} Dist is not empty, override? ${color.dim('(n/y)')} `)
+    // delete last question line
+    process.stdout.write('\x1b[1A\x1b[K');
+    spinner.start()
+    if(answer.trim().toLocaleLowerCase() !== 'y') {
+      console.info('Aborted')
+      process.exit(0)
     }
     await degitClone(repo, dist, { force: true })
-    // return new Promise((rs, rj) => {
-    //   spinner.stop()
-    //   const rl = createInterface({
-    //     input: process.stdin,
-    //     output: process.stdout,
-    //   })
-    //   rl.question(`${color.yellow('?')} Dist is not empty, override? ${color.dim('(y/n)')} `, async answer => {
-    //     rl.close()
-    //     // delete last question line
-    //     process.stdout.write('\x1b[1A\x1b[K');
-    //     spinner.start()
-    //     if(!answer || answer.trim().toLocaleLowerCase() === 'y') {
-    //       rs(await degitClone(repo, dist, { force: true }))
-    //     } else {
-    //       rj(e)
-    //     }
-    //   })
-    // })
+  }
+}
+
+function question(q: string) {
+  return new Promise<string>(rs => {
+    const rl = createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    })
+    rl.question(q, async answer => {
+      rl.close()
+      rs(answer)
+    })
   })
 }

@@ -35,19 +35,16 @@ export const create = defineCommand({
   async run(ctx) {
     const { template, dist, force } = ctx.args
     const absDist = path.resolve(process.cwd(), dist)
-    try {
-      consola.start('Creating template')
-      await createTemplate(template as Template, absDist, { force })
-      consola.start('Installing dependencies')
-      await install(absDist)
-    } catch(e: any) {
-      spinner.stop()
-      console.error(e)
-      process.exit(1)
-    }
+    spinner.start()
+
+    spinner.text = ' Creating template '
+    await createTemplate(template as Template, absDist, { force })
+
+    spinner.text = ' Installing dependencies '
+    await install(absDist)
+
     spinner.stop()
-    consola.log(`\`cd ${dist}\``)
-    process.exit(0)
+    console.log(`cd ${dist}`)
   },
 });
 
