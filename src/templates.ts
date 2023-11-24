@@ -1,6 +1,6 @@
-import { createInterface } from 'node:readline'
+import { createInterface } from 'node:readline/promises'
 import degit from 'degit'
-import { spinner } from './spinner'
+import { spinner } from './spinner2'
 import color from 'picocolors'
 
 export type Template =  'ts' | 'nuxt' | 'vue'
@@ -39,28 +39,21 @@ async function degitClone(repo: string, dist: string, options?: degit.Options) {
     if(e?.code !== 'DEST_NOT_EMPTY') {
       throw e
     }
-    spinner.stop()
+    spinner.remove('template')
     const answer = await question(`${color.yellow('?')} Dist is not empty, override? ${color.dim('(n/y)')} `)
-    // delete last question line
     process.stdout.write('\x1b[1A\x1b[K');
     if(answer.trim().toLocaleLowerCase() !== 'y') {
       console.info(color.dim('\n    Aborted'))
       process.exit(1)
     }
-    spinner.start()
+    spinner.add('template', { text: 'Overriding...' })
     await degitClone(repo, dist, { force: true })
   }
 }
 
-function question(q: string) {
-  return new Promise<string>(rs => {
-    const rl = createInterface({
-      input: process.stdin,
-      output: process.stdout,
-    })
-    rl.question(q, async answer => {
-      rl.close()
-      rs(answer)
-    })
-  })
+async function question(q: string) {
+  const rl = createInterface({ input: process.stdin, output: process.stdout, })
+  const answer = await rl.question(q)
+  rl.close()
+  return answer
 }

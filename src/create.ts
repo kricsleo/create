@@ -2,11 +2,12 @@ import path from 'node:path'
 import { defineCommand, runMain } from "citty";
 import boxen from 'boxen'
 import color from 'picocolors'
+import { spinner } from './spinner2'
 import { version } from '../package.json'
 import { Template, createTemplate, templates } from './templates'
 import { install } from './install';
-import { spinner } from './spinner';
 import { createWord } from './fancyName';
+import { tryInitGit } from './git';
 
 export const create = defineCommand({
   meta: {
@@ -34,15 +35,21 @@ export const create = defineCommand({
   async run(ctx) {
     const { template, dist, force } = ctx.args
     const absDist = path.resolve(process.cwd(), dist)
-    spinner.start()
+    process.chdir(absDist)
 
-    spinner.text = ' Creating template... '
+    spinner.add('template', { text: 'Creating template... '})
     await createTemplate(template as Template, absDist, { force })
+    spinner.succeed('template')
 
-    spinner.text = ' Installing dependencies... '
+    spinner.add('git', { text: 'Initializing git... '})
+    await tryInitGit()
+    spinner.succeed('git')
+
+    spinner.add('install', { text: 'Installing dependencies... '})
     await install(absDist)
+    spinner.succeed('install')
 
-    spinner.stop()
+    spinner.stopAll()
     console.log(boxen(color.dim('>  ' + absDist) + '\n' + color.dim('>  ') + color.cyan(color.bold(`cd ${dist}`)), {
       title: color.green('CREATED'),
       titleAlignment: 'center',
