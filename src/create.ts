@@ -37,19 +37,19 @@ export const create = defineCommand({
     const absDist = path.resolve(process.cwd(), dist)
     process.chdir(absDist)
 
-    spinner.add('template', { text: 'Creating template... '})
+    spinner.add('template', 'Creating template... ')
     await createTemplate(template as Template, absDist, { force })
     spinner.succeed('template')
 
-    spinner.add('git', { text: 'Initializing git... '})
+    spinner.add('git', 'Initializing git... ')
     await tryInitGit()
     spinner.succeed('git')
 
-    spinner.add('install', { text: 'Installing dependencies... '})
+    spinner.add('install', 'Installing dependencies... ')
     await install(absDist)
     spinner.succeed('install')
 
-    spinner.stopAll()
+    spinner.removeAll()
     console.log(boxen(color.dim('>  ' + absDist) + '\n' + color.dim('>  ') + color.cyan(color.bold(`cd ${dist}`)), {
       title: color.green('CREATED'),
       titleAlignment: 'center',

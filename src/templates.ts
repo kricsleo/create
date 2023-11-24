@@ -46,7 +46,7 @@ async function degitClone(repo: string, dist: string, options?: degit.Options) {
       console.info(color.dim('\n    Aborted'))
       process.exit(1)
     }
-    spinner.add('template', { text: 'Overriding...' })
+    spinner.add('template', 'Overriding...' )
     await degitClone(repo, dist, { force: true })
   }
 }
