@@ -38,8 +38,7 @@
   "scripts": {
     "dev": "unbuild --stub",
     "build": "unbuild",
-    "test": "create",
-    "release": "bumpp && npm publish",
+    "release": "npm run build && bumpp && npm publish",
     "prepublishOnly": "npm run build",
     "lint": "eslint .",
     "lintf": "eslint . --fix"
@@ -48,9 +47,7 @@
     "boxen": "^7.1.1",
     "citty": "^0.1.5",
     "degit": "^2.8.4",
-    "nanospinner": "^1.1.0",
     "nypm": "^0.3.4",
-    "ora": "^8.0.1",
     "picocolors": "^1.0.0",
     "spinnies": "^0.5.1"
   },
@@ -63,5 +60,8 @@
     "tsx": "^4.7.0",
     "typescript": "^5.3.3",
     "unbuild": "^2.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
   }
 }
