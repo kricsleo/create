@@ -4,12 +4,13 @@ import { defineCommand, runMain } from 'citty'
 import boxen from 'boxen'
 import color from 'picocolors'
 import { version } from '../package.json'
-import { spinner } from './spinner2'
 import type { Template } from './templates'
 import { createTemplate, templates } from './templates'
-import { install } from './install'
+import { installDeps } from './install'
 import { createWord } from './fancyName'
-import { tryInitGit } from './git'
+import { initGit } from './git'
+import { spinner } from './spinner'
+import { clearLogs } from './utils'
 
 export const create = defineCommand({
   meta: {
@@ -37,21 +38,28 @@ export const create = defineCommand({
   async run(ctx) {
     const { template, dist, force } = ctx.args
     const absDist = path.resolve(process.cwd(), dist)
-    process.chdir(absDist)
 
     spinner.add('template', 'Creating template... ')
     await createTemplate(template as Template, absDist, { force })
-    spinner.succeed('template')
+    spinner.succeed('template', 'Create template done.')
 
-    spinner.add('git', 'Initializing git... ')
-    await tryInitGit()
-    spinner.succeed('git')
+    process.chdir(absDist)
 
-    spinner.add('install', 'Installing dependencies... ')
-    await install(absDist)
-    spinner.succeed('install')
+    await Promise.all([
+      (async () => {
+        spinner.add('git', 'Initializing git... ')
+        await initGit()
+        spinner.succeed('git', 'Initialize git done.')
+      })(),
+      (async () => {
+        spinner.add('install', 'Installing dependencies... ')
+        await installDeps(absDist)
+        spinner.succeed('install', 'Install dependencies done.')
+      })(),
+    ])
 
-    spinner.removeAll()
+    clearLogs(3)
+
     // eslint-disable-next-line no-console
     console.log(boxen(`${color.dim(`>  ${absDist}`)}\n${color.dim('>  ')}${color.cyan(color.bold(`cd ${dist}`))}`, {
       title: color.green('CREATED'),

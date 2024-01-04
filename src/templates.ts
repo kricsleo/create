@@ -2,7 +2,8 @@ import process from 'node:process'
 import { createInterface } from 'node:readline/promises'
 import degit from 'degit'
 import color from 'picocolors'
-import { spinner } from './spinner2'
+import { spinner } from './spinner'
+import { clearLogs } from './utils'
 
 export type Template = 'ts' | 'nuxt3' | 'vue3'
 
@@ -36,20 +37,20 @@ async function degitClone(repo: string, dist: string, options?: degit.Options) {
   const emitter = degit(repo, { cache: true, ...options })
   try {
     await emitter.clone(dist)
-  }
-  catch (e: any) {
-    if (e?.code !== 'DEST_NOT_EMPTY')
+  } catch (e: any) {
+    if (e?.code !== 'DEST_NOT_EMPTY') {
       throw e
+    }
 
     spinner.remove('template')
-    const answer = await question(`${color.yellow('?')} Dist is not empty, override? ${color.dim('(n/y)')} `)
-    process.stdout.write('\x1B[1A\x1B[K')
+    const answer = await question(`${color.yellow('🤔')} Dist${color.dim(`(${dist})`)} is not empty, override? ${color.dim('(n/y)')} `)
+    clearLogs(1)
     if (answer.trim().toLocaleLowerCase() !== 'y') {
       // eslint-disable-next-line no-console
-      console.info(color.dim('\n    Aborted'))
+      console.info('\n    🔴 Aborted')
       process.exit(1)
     }
-    spinner.add('template', 'Overriding...')
+    spinner.add('template', 'Overriding dist...')
     await degitClone(repo, dist, { force: true })
   }
 }
