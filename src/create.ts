@@ -1,19 +1,21 @@
+import process from 'node:process'
 import path from 'node:path'
-import { defineCommand, runMain } from "citty";
+import { defineCommand, runMain } from 'citty'
 import boxen from 'boxen'
 import color from 'picocolors'
-import { spinner } from './spinner2'
 import { version } from '../package.json'
-import { Template, createTemplate, templates } from './templates'
-import { install } from './install';
-import { createWord } from './fancyName';
-import { tryInitGit } from './git';
+import { spinner } from './spinner2'
+import type { Template } from './templates'
+import { createTemplate, templates } from './templates'
+import { install } from './install'
+import { createWord } from './fancyName'
+import { tryInitGit } from './git'
 
 export const create = defineCommand({
   meta: {
-    name: "create",
+    name: 'create',
     version,
-    description: "Create template app quickily",
+    description: 'Create template app quickily',
   },
   args: {
     template: {
@@ -24,13 +26,13 @@ export const create = defineCommand({
     dist: {
       type: 'positional',
       valueHint: 'Dist',
-      default: createWord()
+      default: createWord(),
     },
     force: {
       type: 'boolean',
       description: 'Override existing file',
       alias: 'f',
-    }
+    },
   },
   async run(ctx) {
     const { template, dist, force } = ctx.args
@@ -50,7 +52,8 @@ export const create = defineCommand({
     spinner.succeed('install')
 
     spinner.removeAll()
-    console.log(boxen(color.dim('>  ' + absDist) + '\n' + color.dim('>  ') + color.cyan(color.bold(`cd ${dist}`)), {
+    // eslint-disable-next-line no-console
+    console.log(boxen(`${color.dim(`>  ${absDist}`)}\n${color.dim('>  ')}${color.cyan(color.bold(`cd ${dist}`))}`, {
       title: color.green('CREATED'),
       titleAlignment: 'center',
       borderColor: 'green',
@@ -59,8 +62,6 @@ export const create = defineCommand({
       margin: { top: 1, right: 2, left: 2 },
     }))
   },
-});
+})
 
-runMain(create);
-
-
+runMain(create)

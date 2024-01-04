@@ -1,5 +1,4 @@
 import Spinnies from 'spinnies'
-import readline from 'node:readline'
 
 export class Spinner {
   s: Spinnies
@@ -7,17 +6,21 @@ export class Spinner {
   constructor() {
     this.s = new Spinnies()
   }
+
   add(name: string, text: string) {
     this.names.add(name)
     this.s.add(name, { text, spinnerColor: 'cyan' })
   }
+
   succeed(name: string) {
     this.s.succeed(name)
   }
+
   remove(name: string) {
     this.names.delete(name)
     this.s.remove(name)
   }
+
   removeAll() {
     // doesn't work
     this.names.forEach(name => this.remove(name))

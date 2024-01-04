@@ -1,12 +1,11 @@
 {
   "name": "@kricsleo/create",
+  "type": "module",
   "version": "0.1.3",
-  "author": "Kricsleo <kricsleo@163.com>",
+  "packageManager": "pnpm@8.14.0",
   "description": "Create template app quickily",
-  "keywords": [
-    "starter",
-    "template"
-  ],
+  "author": "Kricsleo <kricsleo@163.com>",
+  "license": "MIT",
   "homepage": "https://github.com/kricsleo/create#readme",
   "repository": {
     "type": "git",
@@ -15,12 +14,10 @@
   "bugs": {
     "url": "https://github.com/kricsleo/create/issues"
   },
-  "packageManager": "pnpm@8.10.5",
-  "type": "module",
-  "license": "MIT",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "keywords": [
+    "starter",
+    "template"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -28,37 +25,43 @@
       "require": "./dist/index.cjs"
     }
   },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "bin": {
     "create": "bin/create.mjs"
   },
   "files": [
-    "dist",
-    "bin"
+    "bin",
+    "dist"
   ],
   "scripts": {
     "dev": "unbuild --stub",
     "build": "unbuild",
+    "test": "create",
     "release": "bumpp && npm publish",
+    "prepublishOnly": "npm run build",
     "lint": "eslint .",
-    "lintf": "eslint . --fix",
-    "prepublishOnly": "npm run build"
-  },
-  "devDependencies": {
-    "@types/degit": "^2.8.6",
-    "@types/spinnies": "^0.5.3",
-    "bumpp": "^9.2.0",
-    "tsx": "^4.1.3",
-    "typescript": "^5.2.2",
-    "unbuild": "^2.0.0"
+    "lintf": "eslint . --fix"
   },
   "dependencies": {
     "boxen": "^7.1.1",
     "citty": "^0.1.5",
     "degit": "^2.8.4",
     "nanospinner": "^1.1.0",
-    "nypm": "^0.3.3",
-    "ora": "^7.0.1",
+    "nypm": "^0.3.4",
+    "ora": "^8.0.1",
     "picocolors": "^1.0.0",
     "spinnies": "^0.5.1"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^2.6.1",
+    "@types/degit": "^2.8.6",
+    "@types/spinnies": "^0.5.3",
+    "bumpp": "^9.2.1",
+    "eslint": "^8.56.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3",
+    "unbuild": "^2.0.0"
   }
 }
