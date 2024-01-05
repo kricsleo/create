@@ -31,7 +31,7 @@ export const create = defineCommand({
     },
     force: {
       type: 'boolean',
-      description: 'Override existing file',
+      description: 'Override existing file and ignore caches',
       alias: 'f',
     },
   },
@@ -40,7 +40,7 @@ export const create = defineCommand({
     const absDist = path.resolve(process.cwd(), dist)
 
     spinner.add('template', 'Creating template... ')
-    await createTemplate(template as Template, absDist, { force })
+    await createTemplate(template as Template, absDist, { force, cache: !force })
     spinner.succeed('template', 'Create template done.')
 
     process.chdir(absDist)
