@@ -24,7 +24,7 @@ async function createTS(dist: string, options?: degit.Options) {
 }
 
 async function createNuxt3(dist: string, options?: degit.Options) {
-  const REPO = 'nuxt/starter#v3'
+  const REPO = 'kricsleo/starter-nuxt3'
   return await degitClone(REPO, dist, options)
 }
 
