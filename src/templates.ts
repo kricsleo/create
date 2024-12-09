@@ -5,7 +5,7 @@ import color from 'picocolors'
 import { spinner } from './spinner'
 import { clearLogs } from './utils'
 
-export type Template = 'ts' | 'nuxt3' | 'vue3'
+export type Template = 'ts' | 'nuxt3' | 'vue2' | 'vue3'
 
 export const templates: Template[] = ['ts', 'nuxt3', 'vue3']
 
@@ -13,6 +13,7 @@ export async function createTemplate(template: Template, dist: string, options?:
   switch (template) {
     case 'ts': return await createTS(dist, options)
     case 'nuxt3': return await createNuxt3(dist, options)
+    case 'vue2': return await createVue2(dist, options)
     case 'vue3': return await createVue3(dist, options)
     default: throw new Error(`Unknown template: ${template}`)
   }
@@ -25,6 +26,11 @@ async function createTS(dist: string, options?: degit.Options) {
 
 async function createNuxt3(dist: string, options?: degit.Options) {
   const REPO = 'kricsleo/starter-nuxt3'
+  return await degitClone(REPO, dist, options)
+}
+
+async function createVue2(dist: string, options?: degit.Options) {
+  const REPO = 'kricsleo/starter-vue2'
   return await degitClone(REPO, dist, options)
 }
 
