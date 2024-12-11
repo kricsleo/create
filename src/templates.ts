@@ -7,7 +7,7 @@ import { clearLogs } from './utils'
 
 export type Template = 'ts' | 'nuxt3' | 'vue2' | 'vue3'
 
-export const templates: Template[] = ['ts', 'nuxt3', 'vue3']
+export const templates: Template[] = ['ts', 'nuxt3', 'vue2', 'vue3']
 
 export async function createTemplate(template: Template, dist: string, options?: degit.Options) {
   switch (template) {
