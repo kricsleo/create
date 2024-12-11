@@ -54,6 +54,7 @@
   "devDependencies": {
     "@antfu/eslint-config": "^2.6.1",
     "@types/degit": "^2.8.6",
+    "@types/node": "^22.10.2",
     "@types/spinnies": "^0.5.3",
     "bumpp": "^9.2.1",
     "eslint": "^8.56.0",
