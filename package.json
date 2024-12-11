@@ -1,7 +1,7 @@
 {
   "name": "@kricsleo/create",
   "type": "module",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "packageManager": "pnpm@8.14.0",
   "description": "Create template app quickily",
   "author": "Kricsleo <kricsleo@163.com>",
